@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class ShopCRUD {
     String token = "";
     String baseURL = "http://uniorder.pro/api";
+   public String shopId;
 
     @BeforeTest
     public void authenticate() {
@@ -37,7 +38,7 @@ public class ShopCRUD {
 
     @Test
     public void shopCRUD(){
-        String shopId;
+
 
         Shops shops = new Shops();
         shops.setName("Магазин 1");
