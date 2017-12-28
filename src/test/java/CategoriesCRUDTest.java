@@ -7,7 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertTrue;
 
-public class CategoriesCRUD {
+public class CategoriesCRUDTest {
     String token = "";
     String baseURL = "http://uniorder.pro/api";
 

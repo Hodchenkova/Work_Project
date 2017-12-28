@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
 
-public class CustomerCRUD {
+public class CustomerCRUDTest {
 
         String token = "";
         String baseURL = "http://uniorder.pro/api";
