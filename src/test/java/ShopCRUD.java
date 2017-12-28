@@ -1,6 +1,3 @@
-import JsonForModules.Login;
-import JsonForModules.Shops;
-import JsonForModules.UpdateShop;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -12,13 +9,13 @@ import static org.junit.Assert.assertTrue;
 public class ShopCRUD {
     String token = "";
     String baseURL = "http://uniorder.pro/api";
-   public String shopId;
+   public static String shopId;
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
+
 
         token = given()
                 .accept("application/json")
@@ -39,16 +36,13 @@ public class ShopCRUD {
     @Test
     public void shopCRUD(){
 
-
-        Shops shops = new Shops();
-        shops.setName("Магазин 1");
-        shops.setStatus(1);
-        shops.setType("magento2");
+        JsonFixture jsonFixture = new JsonFixture();
+        String shop = jsonFixture.jsonForCreateShop();
 
         shopId = given().
                 header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(shops).
+                body(shop).
                 when().
                 post(baseURL + "/shop").
                 then().
@@ -73,10 +67,8 @@ public class ShopCRUD {
                 log().all().
                 body("_id",equalTo(shopId));
 
-        UpdateShop updateShop = new UpdateShop();
-        updateShop.setName("Test Shop");
-        updateShop.setStatus(0);
-        updateShop.setType("magento2");
+
+        String updateShop = jsonFixture.jsonForUpdateShop();
 
         ValidatableResponse updateShops = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).

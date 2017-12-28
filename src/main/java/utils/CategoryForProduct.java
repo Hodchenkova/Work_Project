@@ -1,4 +1,4 @@
-package JsonForModules;
+package utils;
 
 public class CategoryForProduct {
     public String getCategory_id() {

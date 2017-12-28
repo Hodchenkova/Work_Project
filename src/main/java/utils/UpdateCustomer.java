@@ -1,8 +1,6 @@
-package JsonForModules;
+package utils;
 
-public class Customer {
-    private String name;
-
+public class UpdateCustomer {
     public String getName() {
         return name;
     }
@@ -27,6 +25,7 @@ public class Customer {
         this.phone = phone;
     }
 
+    private String name;
     private String shop_id;
     private String phone;
 }

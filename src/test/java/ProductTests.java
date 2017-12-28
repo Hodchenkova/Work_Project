@@ -1,7 +1,4 @@
-import JsonForModules.Category;
-import JsonForModules.CategoryForProduct;
-import JsonForModules.Login;
-import JsonForModules.Product;
+import utils.CategoryForProduct;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -18,9 +15,8 @@ public class ProductTests {
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
 
         token = given()
                 .accept("application/json")
@@ -41,12 +37,10 @@ public class ProductTests {
 
     @Test
     public void addCategoryToProduct() {
-        Product product = new Product();
-        product.setName("Product 1");
-        product.setStatus(1);
-        product.setType(1);
-        product.setSku("sku8");
-        product.setUnit(1);
+
+        JsonFixture jsonFixture = new JsonFixture();
+        String product = jsonFixture.jsonForCreateProduct();
+        String category = jsonFixture.JsonForCategory();
 
         productId = given().
                 header("Content-Type", "application/json").
@@ -59,9 +53,6 @@ public class ProductTests {
                 extract().
                 path("_id").toString();
 
-        Category category = new Category();
-        category.setName("Category 1");
-        category.setParentCategory(null);
 
 
         categoryId = given().

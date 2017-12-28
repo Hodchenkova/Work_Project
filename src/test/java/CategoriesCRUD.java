@@ -1,6 +1,3 @@
-import JsonForModules.Category;
-import JsonForModules.Login;
-import JsonForModules.UpdateCategory;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -12,11 +9,11 @@ import static org.testng.Assert.assertTrue;
 public class CategoriesCRUD {
     String token = "";
     String baseURL = "http://uniorder.pro/api";
+
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
 
         token = given()
                 .accept("application/json")
@@ -39,16 +36,14 @@ public class CategoriesCRUD {
     @Test
     public void categoryCRUD(){
     String categoryId;
-    Category category = new Category();
-    category.setName("Category 1");
-    category.setParentCategory(null);
 
+    JsonFixture jsonFixture = new JsonFixture();
+        String createCategoryJson = jsonFixture.JsonForCategory();
 
-
-    categoryId = given().
+        categoryId = given().
             header("Content-Type", "application/json").
             header("Authorization","Bearer "+ token).
-            body(category).
+            body(createCategoryJson).
             when().
             post(baseURL + "/category").
             then().
@@ -71,13 +66,13 @@ public class CategoriesCRUD {
                 then().statusCode(200).
                 body("_id",equalTo(categoryId));
 
-        UpdateCategory updateCategory = new UpdateCategory();
-        updateCategory.setName("Test Category");
-        updateCategory.setParentCategory(null);
 
-        ValidatableResponse updateCategories = given().header("Content-Type", "application/json").
+
+        String updateCategotyJson = jsonFixture.jsonForUpdateCategory();
+
+        ValidatableResponse updateCategory = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(updateCategory).
+                body(updateCategotyJson).
                 when().
                 put(baseURL + "/category/"+ categoryId).
                 then().statusCode(200).
@@ -87,7 +82,7 @@ public class CategoriesCRUD {
 
         ValidatableResponse delCategory = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(updateCategory).
+                body(updateCategotyJson).
                 when().
                 delete("http://uniorder.pro/api/category/"+ categoryId).
                 then().

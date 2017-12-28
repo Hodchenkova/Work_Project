@@ -1,7 +1,5 @@
-import JsonForModules.Customer;
-import JsonForModules.Login;
-import JsonForModules.Shops;
-import JsonForModules.UpdateCustomer;
+import utils.ApiUris;
+import utils.UpdateCustomer;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -17,11 +15,10 @@ public class CustomerCRUD {
         String customerId;
         @BeforeTest
         public void authenticate() {
-            Login login = new Login();
-            login.setEmail("testuser@test.test");
-            login.setPassword("123456");
+                JsonFixture jsonFixture = new JsonFixture();
+                String login = jsonFixture.jsonForLogin();
 
-            token = given()
+                token = given()
                     .accept("application/json")
                     .contentType("application/json")
                     .body(login)
@@ -39,15 +36,14 @@ public class CustomerCRUD {
         @Test
     public void customerCRUD(){
             String shopId;
-            Shops shops = new Shops();
-            shops.setName("Магазин 1");
-            shops.setStatus(1);
-            shops.setType("magento2");
+
+                JsonFixture jsonFixture = new JsonFixture();
+                String shop = jsonFixture.jsonForCreateShop();
 
             shopId = given().
                     header("Content-Type", "application/json").
                     header("Authorization","Bearer "+ token).
-                    body(shops).
+                    body(shop).
                     when().
                     post(baseURL + "/shop").
                     then().
@@ -55,10 +51,13 @@ public class CustomerCRUD {
                     extract().
                     path("_id").toString();
 
-            Customer customer = new Customer();
+            ApiUris.Customer customer = new ApiUris.Customer();
             customer.setName("Иванов Иван");
             customer.setShop_id(shopId);
             customer.setPhone("+380672222222");
+
+//                JsonFixture jsonforCategory = new JsonFixture();
+//                String createCustomer = jsonforCategory.jsonForCreateCustomer();
 
             customerId = given().
                     header("Content-Type", "application/json").

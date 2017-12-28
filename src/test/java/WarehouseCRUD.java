@@ -1,6 +1,3 @@
-import JsonForModules.Login;
-import JsonForModules.Stores;
-import JsonForModules.UpdateStore;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -9,16 +6,16 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertTrue;
 
-public class StoreCRUD {
+public class WarehouseCRUD {
 
     String token = "";
     String baseURL = "http://uniorder.pro/api";
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
+
 
         token = given()
                 .accept("application/json")
@@ -38,16 +35,14 @@ public class StoreCRUD {
     @Test
     public void storeCRUD(){
         String storeID;
-        Stores stores = new Stores();
-        stores.setName("Склад 1");
-        stores.setCan_local_pickup(true);
-        stores.setPhone("380637737373");
-        stores.setAddress("Пушкинская, 1");
+
+        JsonFixture jsonFixture = new JsonFixture();
+        String warehouse = jsonFixture.jsonForCreateWarehouse();
 
         storeID = given().
                 header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(stores).
+                body(warehouse).
                 when().
                 post(baseURL + "/warehouse").
                 then().
@@ -70,16 +65,13 @@ public class StoreCRUD {
                 then().statusCode(200).
                 body("_id",equalTo(storeID));
 
-        UpdateStore updateStore = new UpdateStore();
-        updateStore.setName("Склад 11");
-        updateStore.setCan_local_pickup(false);
-        updateStore.setPhone("380637737374");
-        updateStore.setAddress("Пушкинская, 2");
+
+        String updateWarehouse = jsonFixture.jsonForUpdateWarehouse();
 
 
         ValidatableResponse updateStores = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(updateStore).
+                body(updateWarehouse).
                 when().
                 put(baseURL + "/warehouse/"+ storeID).
                 then().statusCode(200).
@@ -91,7 +83,7 @@ public class StoreCRUD {
 
         ValidatableResponse delStores = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(updateStore).
+                body(updateWarehouse).
                 when().
                 delete(baseURL + "/warehouse/"+ storeID).
                 then().

@@ -1,6 +1,3 @@
-import JsonForModules.Login;
-import JsonForModules.Product;
-import JsonForModules.UpdateProduct;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,9 +12,8 @@ public class ProductCRUD {
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
 
         token = given()
                 .accept("application/json")
@@ -40,17 +36,14 @@ public class ProductCRUD {
     @Test
     public void productCRUD(){
         String productId;
-        Product product = new Product();
-        product.setName("Product 1");
-        product.setStatus(1);
-        product.setType(1);
-        product.setSku("sku1111");
-        product.setUnit(1);
+
+        JsonFixture jsonFixture = new JsonFixture();
+        String createProduct = jsonFixture.jsonForCreateProduct();
 
         productId = given().
                 header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(product).
+                body(createProduct).
                 when().
                 post(baseURL + "/product").
                 then().
@@ -76,14 +69,9 @@ public class ProductCRUD {
                 log().all().
                 body("_id",equalTo(productId));
 
-        UpdateProduct updateProduct = new UpdateProduct();
-        updateProduct.setName("Test Product");
-        updateProduct.setStatus(0);
-        updateProduct.setType(1);
-        updateProduct.setSku("testsku");
-        updateProduct.setUnit(1);
+        String updateProduct = jsonFixture.jsonForUpdateProduct();
 
-        ValidatableResponse updateProducts = given().header("Content-Type", "application/json").
+        ValidatableResponse updateProductt = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
                 body(updateProduct).
                 when().

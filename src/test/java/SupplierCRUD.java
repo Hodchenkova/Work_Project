@@ -1,6 +1,3 @@
-import JsonForModules.Login;
-import JsonForModules.Supplier;
-import JsonForModules.UpdateSupplier;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,9 +12,8 @@ public class SupplierCRUD {
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
 
         token = given()
                 .accept("application/json")
@@ -39,8 +35,8 @@ public class SupplierCRUD {
 
         String supplierId;
 
-            Supplier supplier = new Supplier();
-            supplier.setName("Zara");
+            JsonFixture jsonFixture = new JsonFixture();
+            String supplier = jsonFixture.jsonForCreateSupplier();
 
             supplierId = given().
                     header("Content-Type", "application/json").
@@ -70,8 +66,7 @@ public class SupplierCRUD {
                     log().all().
                     body("_id",equalTo(supplierId));
 
-            UpdateSupplier updateSupplier = new UpdateSupplier();
-            updateSupplier.setName("Test Supplier");
+            String updateSupplier = jsonFixture.jsonForUpdateSupplier();
 
             ValidatableResponse updateSupplieer = given().header("Content-Type", "application/json").
                     header("Authorization","Bearer "+ token).

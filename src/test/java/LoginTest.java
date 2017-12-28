@@ -1,39 +1,18 @@
-import JsonForModules.Login;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.testng.Assert.assertNotNull;
 
 public class LoginTest {
     String token = "";
     String headerToken = "Bearer " + token;
-//    @Test
-//    public static void login() {
-//
-//
-//       String response = given().
-//                header("Content-Type", "application/json").
-//                        body( "{\n" + " \"email\": \"vasily@test.test\",\n" +
-//                                "    \"password\": \"123456\"\n" + "} ").
-//                when().
-//                post("http://uniorder.pro/api/login").
-//                then().extract().
-//                 asString();
-//        System.out.println(response);
-//    }
+
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("vasily@test.test");
-        login.setPassword("123456");
-
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
         token = given()
                 .accept("application/json")
                 .contentType("application/json")
@@ -51,8 +30,6 @@ public class LoginTest {
         System.out.println(token);
 
     }
-
-
     @Test
     public void profileMyself() {
 

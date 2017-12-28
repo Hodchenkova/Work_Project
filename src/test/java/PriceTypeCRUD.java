@@ -1,6 +1,3 @@
-import JsonForModules.Login;
-import JsonForModules.PriceTypes;
-import JsonForModules.UpdatePriceType;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -16,9 +13,8 @@ public class PriceTypeCRUD {
 
     @BeforeTest
     public void authenticate() {
-        Login login = new Login();
-        login.setEmail("testuser@test.test");
-        login.setPassword("123456");
+        JsonFixture jsonFixture = new JsonFixture();
+        String login = jsonFixture.jsonForLogin();
 
         token = given()
                 .accept("application/json")
@@ -38,14 +34,14 @@ public class PriceTypeCRUD {
     @Test
     public void priceTypeCRUD(){
         String priceTypeId;
-        PriceTypes priceTypes = new PriceTypes();
-        priceTypes.setName("Розница");
-        priceTypes.setCurrency("USD");
+
+        JsonFixture jsonFixture = new JsonFixture();
+        String priceType = jsonFixture.jsonForCreatePriceType();
 
         priceTypeId = given().
                 header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
-                body(priceTypes).
+                body(priceType).
                 when().
                 post(baseURL + "/price-type").
                 then().
@@ -69,9 +65,8 @@ public class PriceTypeCRUD {
                 log().all().
                 body("_id",equalTo(priceTypeId));
 
-        UpdatePriceType updatePriceType = new UpdatePriceType();
-        updatePriceType.setName("Test PriceType");
-        updatePriceType.setCurrency("UAH");
+
+        String updatePriceType = jsonFixture.jsonForUpdatePriceType();
 
 
         ValidatableResponse updatePriceTypes = given().header("Content-Type", "application/json").
@@ -81,7 +76,7 @@ public class PriceTypeCRUD {
                 put(baseURL + "/price-type/"+ priceTypeId).
                 then().statusCode(200).
                 log().all().
-                body("name",equalTo("Test PriceType"));
+                body("name",equalTo("Test Price Type"));
 
 
         ValidatableResponse delPriceType = given().header("Content-Type", "application/json").
