@@ -1,6 +1,7 @@
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utils.JsonFixture;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;

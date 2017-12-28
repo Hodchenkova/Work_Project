@@ -1,3 +1,5 @@
+package utils;
+
 import org.json.simple.JSONObject;
 
 public class JsonFixture {

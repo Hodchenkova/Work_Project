@@ -1,4 +1,5 @@
 import utils.ApiUris;
+import utils.JsonFixture;
 import utils.UpdateCustomer;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
@@ -56,7 +57,7 @@ public class CustomerCRUD {
             customer.setShop_id(shopId);
             customer.setPhone("+380672222222");
 
-//                JsonFixture jsonforCategory = new JsonFixture();
+//                utils.JsonFixture jsonforCategory = new utils.JsonFixture();
 //                String createCustomer = jsonforCategory.jsonForCreateCustomer();
 
             customerId = given().
