@@ -1,9 +1,9 @@
-import utils.ApiUris;
-import utils.JsonFixture;
-import utils.UpdateCustomer;
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utils.Customer;
+import utils.JsonFixture;
+import utils.UpdateCustomer;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -52,7 +52,7 @@ public class CustomerCRUD {
                     extract().
                     path("_id").toString();
 
-            ApiUris.Customer customer = new ApiUris.Customer();
+            Customer customer = new Customer();
             customer.setName("Иванов Иван");
             customer.setShop_id(shopId);
             customer.setPhone("+380672222222");
