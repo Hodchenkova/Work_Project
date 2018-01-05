@@ -59,6 +59,7 @@ public class ShopCRUD {
 
         assertTrue(response.contains(shopId));
 
+        String customer = jsonFixture.jsonForCreateCustomer(shopId);
 
         ValidatableResponse getCreatedShop = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).

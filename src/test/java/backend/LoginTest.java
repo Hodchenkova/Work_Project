@@ -41,7 +41,7 @@ public class LoginTest {
                 get("http://uniorder.pro/api/profile/self").
                 then().
                 log().all().
-                body("user.email", equalTo("vasily@test.test")).
+                body("user.email", equalTo("testuser@test.test")).
                         statusCode(200));
 
     }

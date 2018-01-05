@@ -80,7 +80,7 @@ public class ProductCRUD {
                 then().statusCode(200).
                 log().all().
                 body("name",equalTo("Test Product")).
-                body("sku", equalTo("testsku")).
+                body("sku", equalTo("sku1")).
                 body("status",equalTo(0));
 
 

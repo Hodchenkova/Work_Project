@@ -11,6 +11,7 @@ public class PriceTypeCRUD {
 
     String token = "";
     String baseURL = "http://uniorder.pro/api";
+    String priceTypeId;
 
     @BeforeTest
     public void authenticate() {
@@ -34,7 +35,7 @@ public class PriceTypeCRUD {
 
     @Test
     public void priceTypeCRUD(){
-        String priceTypeId;
+
 
         JsonFixture jsonFixture = new JsonFixture();
         String priceType = jsonFixture.jsonForCreatePriceType();
