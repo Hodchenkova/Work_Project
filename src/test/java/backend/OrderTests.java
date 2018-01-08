@@ -5,16 +5,16 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertNotEquals;
 
 public class OrderTests {
-    String token = "";
-    String baseURL = "http://uniorder.pro/api";
 
-   static String shopId = "";
+    static String token = "";
+   static String baseURL = "http://uniorder.loc/api";
+
+   public static String shopId = "";
    public static String customerId = "";
    public static String productId = "";
    public static String orderId = "";
@@ -38,12 +38,11 @@ public class OrderTests {
                 .extract()
                 .path("user.api_token").toString();
 
-        System.out.println(token);
 
     }
 
  @Test (groups = { "orders", "backend"})
-    public void createOrder() {
+    public  void createOrder() {
 
      JsonFixture jsonFixture = new JsonFixture();
      String shop = jsonFixture.jsonForCreateShop();
@@ -59,6 +58,7 @@ public class OrderTests {
              extract().
              path("_id").toString();
 
+     System.out.println(shopId);
 
      String jsonForCreateOrder = jsonFixture.jsonForCreateOrder(shopId);
 
@@ -89,11 +89,8 @@ public class OrderTests {
              then().statusCode(200).
              log().all().
              body("_id",equalTo(orderId));
- }
 
- @Test (groups = { "orders", "backend"})
-    public void updateOrder(){
-        JsonFixture jsonFixture = new JsonFixture();
+
         String jsonForUpdateOrder = jsonFixture.jsonForUpdateOrder(shopId);
 
      ValidatableResponse updateOrder = given().header("Content-Type", "application/json").
@@ -106,11 +103,6 @@ public class OrderTests {
              log().all().
              body("comment",equalTo("zzz")).
              body("status_id", equalTo(5));
- }
-
-    @Test (groups = { "orders", "backend"})
-    public void addCustomerToOrder(){
-        JsonFixture jsonFixture = new JsonFixture();
 
 
         String jsonForCreateCustomer = jsonFixture.jsonForCreateCustomer(shopId);
@@ -140,44 +132,61 @@ public class OrderTests {
         JsonFixture jsonFixture = new JsonFixture();
 
         String jsonForCreateProduct = jsonFixture.jsonForCreateProduct();
-        String jsonForAddProductToOrder = jsonFixture.jsonForAddProductToOrder(productId);
-        String jsonForUpdateProductToOrder = jsonFixture.jsonForUpdateProductToOrder(productId);
+
 
         productId = given().
                 header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
-                body(jsonForCreateProduct).
                 when().
-                post(baseURL + "/product").
+                get(baseURL + "/product").
                 then().
-                log().all().
+//                log().all().
                 extract().
-                path("_id").toString();
+                path("data._id[1]").toString();
 
-        ValidatableResponse addProductToOrder = given().header("Content-Type", "application/json").
+        System.out.println(productId);
+
+        String orderId = given().header("Content-Type", "application/json").
+                header("Authorization","Bearer "+ token).
+                when().
+                get(baseURL + "/order").
+                then().statusCode(200).
+                extract().
+                path("_id[1]").toString();
+
+        System.out.println(orderId);
+
+        String jsonForAddProductToOrder = jsonFixture.jsonForAddProductToOrder(productId);
+        String addProductToOrder = given().header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 body(jsonForAddProductToOrder).
                 when().
                 post(baseURL + "/order/" + orderId + "/product").
                 then().statusCode(200).
                 log().all().
-                body("product_id", equalTo(productId));
+                body("product_id", equalTo(productId)).
+                extract().
+                path("_id").toString();
 
+        String newProductId = addProductToOrder;
+        System.out.println(newProductId);
+
+        String jsonForUpdateProductToOrder = jsonFixture.jsonForUpdateProductToOrder(productId);
         ValidatableResponse updateProductToOrder = given().header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 body(jsonForUpdateProductToOrder).
                 when().
-                post(baseURL + "/order/" + orderId + "/product/" + productId).
+                put(baseURL + "/order/" + orderId + "/product/" + newProductId).
                 then().statusCode(200).
                 log().all().
                 body("product_id", equalTo(productId)).
                 body("quantity", equalTo(10)).
-                body("price", equalTo(30.5));
+                body("price", equalTo(30));
 
         ValidatableResponse deleteProductFromOrder = given().header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 when().
-                get(baseURL + "/order/" + orderId + "/product/" + productId).
+                delete(baseURL + "/order/" + orderId + "/product/" + newProductId).
                 then().
                 log().all().
                 statusCode(200);
@@ -188,9 +197,12 @@ public class OrderTests {
                 when().
                 get(baseURL + "/order/" + orderId).
                 then().
-                assertThat().
-                body("product._id", not(hasItem(productId)));
+                log().all().
+                statusCode(200);
+
+                assertNotEquals("_id", orderId);
 
     }
+
 
 }
