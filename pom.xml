@@ -154,15 +154,22 @@
 
     <build>
         <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-            </testResource>
+           <testResource>
+        <directory>src/test/java</directory>
+        <filtering>false</filtering>
+    </testResource>
+    <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>false</filtering>
+    </testResource>
         </testResources>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                </includes>
                 <excludes>
                     <exclude>*.jks</exclude>
                     <exclude>*.png</exclude>
