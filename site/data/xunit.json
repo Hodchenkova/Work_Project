@@ -1,0 +1,60 @@
+{
+  "time" : {
+    "start" : 1514888575788,
+    "stop" : 1514888580330,
+    "duration" : 4542
+  },
+  "testSuites" : [ {
+    "uid" : "d89083d603719ef7",
+    "name" : "Surefire suite : Surefire test",
+    "title" : "Surefire suite : Surefire test",
+    "time" : {
+      "start" : 1514888575788,
+      "stop" : 1514888580330,
+      "duration" : 4542
+    },
+    "statistic" : {
+      "total" : 3,
+      "passed" : 3,
+      "pending" : 0,
+      "canceled" : 0,
+      "failed" : 0,
+      "broken" : 0
+    },
+    "description" : null,
+    "testCases" : [ {
+      "uid" : "3e860234f93ae068",
+      "name" : "customerCRUD",
+      "title" : "Customer CRUD",
+      "time" : {
+        "start" : 1514888575788,
+        "stop" : 1514888579006,
+        "duration" : 3218
+      },
+      "severity" : "NORMAL",
+      "status" : "PASSED"
+    }, {
+      "uid" : "92f6bc86452acee4",
+      "name" : "categoryCRUD",
+      "title" : "Category CRUD",
+      "time" : {
+        "start" : 1514888579089,
+        "stop" : 1514888580154,
+        "duration" : 1065
+      },
+      "severity" : "NORMAL",
+      "status" : "PASSED"
+    }, {
+      "uid" : "a795576db4f0b842",
+      "name" : "profileMyself",
+      "title" : "Profile myself",
+      "time" : {
+        "start" : 1514888580159,
+        "stop" : 1514888580330,
+        "duration" : 171
+      },
+      "severity" : "NORMAL",
+      "status" : "PASSED"
+    } ]
+  } ]
+}

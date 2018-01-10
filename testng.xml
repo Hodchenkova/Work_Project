@@ -1,0 +1,27 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Backend suite">
+
+
+    <test name="Registration Tests">
+        <groups>
+            <run>
+                <include name="backend"/>
+            </run>
+        </groups>
+        <classes>
+            <!--<class name="backend.RegistrationTest"/>-->
+            <!--<class name="backend.AccountTests"/>-->
+            <class name="backend.CategoriesCRUDTest"/>
+            <!--<class name="backend.ProductCRUD"/>-->
+            <!--<class name="backend.PriceTypeCRUD"/>-->
+            <!--<class name="backend.ShopCRUD"/>-->
+            <!--<class name="backend.SupplierCRUD"/>-->
+            <!--<class name="backend.CustomerCRUDTest"/>-->
+            <!--<class name="backend.WarehouseCRUD"/>-->
+            <!--<class name="backend.ProductTests"/>-->
+            <!--<class name="backend.OrderTests"/>-->
+        </classes>
+    </test>
+
+</suite>
+
