@@ -1,9 +1,8 @@
+package backend;
+
 import io.restassured.response.ValidatableResponse;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import utils.Customer;
-import utils.JsonFixture;
-import utils.UpdateCustomer;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -14,6 +13,8 @@ public class CustomerCRUDTest {
         String token = "";
         String baseURL = "http://uniorder.pro/api";
         String customerId;
+        String shopId;
+
         @BeforeTest
         public void authenticate() {
                 JsonFixture jsonFixture = new JsonFixture();
@@ -36,9 +37,10 @@ public class CustomerCRUDTest {
 
         @Test
     public void customerCRUD(){
-            String shopId;
+
 
                 JsonFixture jsonFixture = new JsonFixture();
+//                String shopId = ShopCRUD.shopId;
                 String shop = jsonFixture.jsonForCreateShop();
 
             shopId = given().
@@ -52,18 +54,14 @@ public class CustomerCRUDTest {
                     extract().
                     path("_id").toString();
 
-            Customer customer = new Customer();
-            customer.setName("Иванов Иван");
-            customer.setShop_id(shopId);
-            customer.setPhone("+380672222222");
 
-//                utils.JsonFixture jsonforCategory = new utils.JsonFixture();
-//                String createCustomer = jsonforCategory.jsonForCreateCustomer();
+
+                String createCustomer = jsonFixture.jsonForCreateCustomer(shopId);
 
             customerId = given().
                     header("Content-Type", "application/json").
                     header("Authorization","Bearer "+ token).
-                    body(customer).
+                    body(createCustomer).
                     when().
                     post(baseURL + "/customer").
                     then().
@@ -88,10 +86,8 @@ public class CustomerCRUDTest {
                     log().all().
                     body("_id",equalTo(customerId));
 
-            UpdateCustomer updateCustomer = new UpdateCustomer();
-            updateCustomer.setName("Test Customer");
-            updateCustomer.setShop_id(shopId);
-            updateCustomer.setPhone("+380671111111");
+
+                String updateCustomer = jsonFixture.jsonForUpdateCustomer(shopId);
 
             ValidatableResponse updateCustomerr = given().header("Content-Type", "application/json").
                     header("Authorization","Bearer "+ token).

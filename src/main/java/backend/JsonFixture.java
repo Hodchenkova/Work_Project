@@ -1,4 +1,4 @@
-package utils;
+package backend;
 
 import org.json.simple.JSONObject;
 
@@ -7,9 +7,9 @@ public class JsonFixture {
 
 public  String jsonForRegistration(){
     JSONObject jsonForRegistration = new JSONObject();
-    jsonForRegistration.put("user_name", "test1");
-    jsonForRegistration.put("email", "test1@test.test");
-    jsonForRegistration.put("company_name", "test1Co");
+    jsonForRegistration.put("user_name", "UserTest");
+    jsonForRegistration.put("email", "test2@test.test");
+    jsonForRegistration.put("company_name", "test13Co");
     jsonForRegistration.put("password", "123456");
     jsonForRegistration.put("password_confirmation", "123456");
 
@@ -17,11 +17,20 @@ public  String jsonForRegistration(){
 
 }
 
-public String jsonForLoginWithInvite(){
+
+    public  String jsonForNewLogin(){
+        JSONObject jsonForNewLogin = new JSONObject();
+        jsonForNewLogin.put("email","test2@test.test");
+        jsonForNewLogin.put("password", "123456");
+
+        return jsonForNewLogin.toJSONString();
+    }
+
+public String jsonForLoginWithInvite(String inviteCode){
     JSONObject jsonForLoginWithInvite = new JSONObject();
-    jsonForLoginWithInvite.put("email", "");
-    jsonForLoginWithInvite.put("code","");
-    jsonForLoginWithInvite.put("password","");
+    jsonForLoginWithInvite.put("email", "ivanov3@test.test");
+    jsonForLoginWithInvite.put("code",inviteCode);
+    jsonForLoginWithInvite.put("password","123456");
 
     return jsonForLoginWithInvite.toJSONString();
 }
@@ -73,8 +82,19 @@ public String jsonForLoginWithInvite(){
         JSONObject jsonForCreateCustomer = new JSONObject();
         jsonForCreateCustomer.put("name","Иванов Иван Иванович");
         jsonForCreateCustomer.put("shop_id",shopId);
-        jsonForCreateCustomer.put("phone","");
+        jsonForCreateCustomer.put("phone","+380671234567");
+
         return jsonForCreateCustomer.toJSONString();
+    }
+
+    public String jsonForUpdateCustomer(String shopId){
+
+        JSONObject jsonForUpdateCustomer = new JSONObject();
+        jsonForUpdateCustomer.put("name","Test Customer");
+        jsonForUpdateCustomer.put("shop_id",shopId);
+        jsonForUpdateCustomer.put("phone","+380677777777");
+
+        return jsonForUpdateCustomer.toJSONString();
     }
 
     public String jsonForCreateShop(){
@@ -90,6 +110,7 @@ public String jsonForLoginWithInvite(){
         jsonForUpdateShop.put("name","Test Shop");
         jsonForUpdateShop.put("status", 0);
         jsonForUpdateShop.put("type","magento2");
+
         return  jsonForUpdateShop.toJSONString();
     }
 
@@ -158,7 +179,7 @@ public String jsonForLoginWithInvite(){
     public String jsonForCreateUser(){
         JSONObject jsonForCreateUser = new JSONObject();
         jsonForCreateUser.put("user_name", "Inan Ivanov");
-        jsonForCreateUser.put("email", "ivanov@test.test");
+        jsonForCreateUser.put("email", "ivanov3@test.test");
         jsonForCreateUser.put("password", "123456");
 
         return jsonForCreateUser.toJSONString();
@@ -167,7 +188,7 @@ public String jsonForLoginWithInvite(){
     public String jsonForUpdateUser(){
         JSONObject jsonForUpdateUser = new JSONObject();
         jsonForUpdateUser.put("full_name", "Petr Petrov Petrovich");
-        jsonForUpdateUser.put("email", "petrov@test.test");
+        jsonForUpdateUser.put("email", "petrov2@test.test");
         jsonForUpdateUser.put("phone", "+123456789012");
         jsonForUpdateUser.put("active", true);
 
@@ -179,15 +200,17 @@ public String jsonForLoginWithInvite(){
     public String jsonForCreateOrder(String shopId){
         JSONObject jsonForCreateOrder = new JSONObject();
         jsonForCreateOrder.put("order_date", "1513343976000000");
-        jsonForCreateOrder.put("shop_id",shopId);
+        jsonForCreateOrder.put("shop_id", shopId);
 
         return jsonForCreateOrder.toJSONString();
     }
 
     public String jsonForUpdateOrder(String shopId){
         JSONObject jsonForUpdateOrder = new JSONObject();
-        jsonForUpdateOrder.put("order_date", "1513343976000111");
+        jsonForUpdateOrder.put("order_date", "1513343976000000");
         jsonForUpdateOrder.put("shop_id",shopId);
+        jsonForUpdateOrder.put("comment","zzz");
+        jsonForUpdateOrder.put("status_id", 5);
 
         return jsonForUpdateOrder.toJSONString();
     }
@@ -214,6 +237,15 @@ public String jsonForLoginWithInvite(){
        return jsonForAddProductToOrder.toJSONString();
    }
 
+    public String jsonForUpdateProductToOrder(String productId){
+        JSONObject jsonForUpdateProductToOrder = new JSONObject();
+        jsonForUpdateProductToOrder.put("product_id", productId);
+        jsonForUpdateProductToOrder.put("quantity", 10);
+        jsonForUpdateProductToOrder.put("price", 30);
+
+        return jsonForUpdateProductToOrder.toJSONString();
+    }
+
    //Products
 
 
@@ -223,7 +255,7 @@ public String jsonForLoginWithInvite(){
         jsonForCreateProduct.put("name", "Product 1");
         jsonForCreateProduct.put("status", 1);
         jsonForCreateProduct.put("type", 1);
-        jsonForCreateProduct.put("sku", "1212");
+        jsonForCreateProduct.put("sku", "h");
         jsonForCreateProduct.put("description", "zzzzzz");
         jsonForCreateProduct.put("volume", "10x1x5:m");
         jsonForCreateProduct.put("weight", "110:kg");

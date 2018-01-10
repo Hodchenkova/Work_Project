@@ -116,7 +116,9 @@ public class OrderTests {
                 log().all().
                 extract().
                 path("_id").toString();
+
         String jsonForAddCustomertoOrder = jsonFixture.jsonForAddCustomerToOrder(customerId);
+
         ValidatableResponse addCustomerToOrder = given().header("Content-Type", "application/json").
                 header("Authorization","Bearer "+ token).
                 body(jsonForAddCustomertoOrder).
@@ -157,6 +159,7 @@ public class OrderTests {
         System.out.println(orderId);
 
         String jsonForAddProductToOrder = jsonFixture.jsonForAddProductToOrder(productId);
+
         String addProductToOrder = given().header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 body(jsonForAddProductToOrder).

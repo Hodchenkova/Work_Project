@@ -1,14 +1,14 @@
+package backend;
+
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import utils.JsonFixture;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class LoginTest {
     String token = "";
-    String headerToken = "Bearer " + token;
-
+    String baseURL = "http://uniorder.loc/api";
 
     @BeforeTest
     public void authenticate() {
@@ -21,7 +21,7 @@ public class LoginTest {
                 .expect()
                 .statusCode(200)
                 .when()
-                .post("http://uniorder.pro/api/login")
+                .post(baseURL + "/login")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -38,13 +38,14 @@ public class LoginTest {
                 header("Content-Type", "application/json").
         header("Authorization","Bearer "+ token).
                 when().
-                get("http://uniorder.pro/api/profile/self").
+                get(baseURL + "/profile/self").
                 then().
                 log().all().
                 body("user.email", equalTo("testuser@test.test")).
                         statusCode(200));
 
     }
+
 
 }
 
